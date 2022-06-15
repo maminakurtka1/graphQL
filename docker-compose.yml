@@ -1,0 +1,34 @@
+# Version of docker-compose.
+version: '3'
+
+# Containers we're going to run.
+services:
+  # Our Phoenix container.
+  phoenix:
+    tty: true
+    # The bui
+    # The build parameters for this container.
+    build:
+      # Here we define that it should build from the current directory.
+      dockerfile: Dockerfile
+      context: ./graph
+    container_name: graph
+    ports:
+      # Mapping the port to make the Phoenix app accessible outside of the container.
+      - 4000:4000
+    volumes:
+      - .:/workspace
+      - ~/.gitconfig:/root/.gitconfig
+      - ~/.ssh:/root/.ssh
+  #######################################################
+  react:
+    tty: true
+    container_name: graph-front
+    build:
+      context: ./graphql-video-client
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./src:/app/src
+      - ~/.ssh:/root/.ssh
